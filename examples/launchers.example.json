@@ -1,0 +1,12 @@
+{
+  "desktop": {
+    "items": [
+      {"cell": 0, "type": "clock"},
+      {"cell": 1, "type": "weather"},
+      {"cell": 2, "type": "laundry"},
+      {"cell": 3, "type": "app_launcher", "label": "STEAM", "target": "steam://open/main"},
+      {"cell": 4, "type": "app_launcher", "label": "NOTEPAD", "target": "notepad.exe"},
+      {"cell": 5, "type": "app_launcher", "label": "WEBSITE", "target": "https://example.org/"}
+    ]
+  }
+}

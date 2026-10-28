@@ -1,0 +1,38 @@
+{
+  "preferred_source": "spotify",
+  "audio_mappings": [
+    {
+      "source_contains": "spotify",
+      "process_name": "Spotify.exe"
+    }
+  ],
+  "display": {
+    "title_font_size": 32,
+    "artist_font_size": 20,
+    "album_font_size": 11,
+    "status_font_size": 32,
+    "time_font_size": 32,
+    "feedback_font_size": 40,
+    "title_lines": 3,
+    "artist_lines": 1,
+    "text_overflow": "ellipsis",
+    "show_album": false,
+    "show_progress": true,
+    "feedback_seconds": 2.5,
+    "title_min_font_size": 28,
+    "expanded_title_font_size": 48,
+    "expanded_artist_font_size": 36,
+    "expanded_scroll_pause_seconds": 0,
+    "expanded_timeout_seconds": 30,
+    "expanded_scroll_pixels_per_second": 36
+  },
+  "artist_aliases": {
+    "レッド・ホット・チリ・ペッパーズ": "Red Hot Chili Peppers"
+  },
+  "spotify": {
+    "enabled": false,
+    "client_id": "",
+    "redirect_uri": "http://127.0.0.1:8765/callback",
+    "auto_volume": true
+  }
+}

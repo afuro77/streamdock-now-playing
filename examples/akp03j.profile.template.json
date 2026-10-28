@@ -1,0 +1,206 @@
+{
+  "Actions": {
+    "0,0": {
+      "ActionID": "ddaf8435-7523-4bb8-a5f7-27857f33876f",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 0
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "1,0": {
+      "ActionID": "e4831fb6-7ad0-47fe-bf83-ab78e18bbc55",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 1
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "2,0": {
+      "ActionID": "a512d450-629c-4f41-b975-b8447bc62dfa",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 2
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "0,1": {
+      "ActionID": "96af59a3-2df5-4cd7-99b3-967e23407505",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 3
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "1,1": {
+      "ActionID": "fcba5b8f-d931-4130-82d6-8eac322f3308",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 4
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "2,1": {
+      "ActionID": "eea68a56-5e22-488e-a316-65f9fc61d149",
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Controller": "Keypad",
+      "Name": "tile",
+      "Settings": {
+        "tile": 5
+      },
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "3,0": {
+      "ActionID": "02666f5f-47a0-4613-8ac5-30c478d46ea3",
+      "UUID": "org.streamdock.nowplaying.public.volume",
+      "Controller": "Knob",
+      "Name": "volume",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "3,1": {
+      "ActionID": "31b05c3c-4e33-4f39-a336-fe5514add044",
+      "UUID": "org.streamdock.nowplaying.public.tracks",
+      "Controller": "Knob",
+      "Name": "tracks",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "4,1": {
+      "ActionID": "6456645b-6954-4f05-a00c-562673505f5e",
+      "UUID": "org.streamdock.nowplaying.public.seek",
+      "Controller": "Knob",
+      "Name": "seek",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "5,0": {
+      "ActionID": "82902c18-446c-4027-bc17-6377dd50a5e9",
+      "UUID": "org.streamdock.nowplaying.public.mode",
+      "Controller": "Keypad",
+      "Name": "mode",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "5,1": {
+      "ActionID": "8ab213ab-88e0-4041-861a-7e25ddc414a2",
+      "UUID": "org.streamdock.nowplaying.public.player",
+      "Controller": "Keypad",
+      "Name": "player",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    },
+    "5,2": {
+      "ActionID": "f6c2408a-f55b-4731-b3e6-52e710336fb1",
+      "UUID": "org.streamdock.nowplaying.public.back",
+      "Controller": "Keypad",
+      "Name": "back",
+      "Settings": {},
+      "State": 0,
+      "States": [
+        {
+          "Image": "",
+          "ShowTitle": false,
+          "Title": ""
+        }
+      ]
+    }
+  },
+  "AppIdentifier": "",
+  "DeviceModel": "20GBA9901",
+  "Name": "Now Playing OSS Preview",
+  "Pages": {
+    "Current": "A2622A1A-61DE-4BC9-A5D6-79E5A5D9E5C0.sdProfile",
+    "Pages": [
+      "A2622A1A-61DE-4BC9-A5D6-79E5A5D9E5C0.sdProfile"
+    ]
+  },
+  "Version": "1.0"
+}

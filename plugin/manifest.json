@@ -1,0 +1,134 @@
+{
+  "Actions": [
+    {
+      "UUID": "org.streamdock.nowplaying.public.tile",
+      "Name": "Artwork / information",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Keypad"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.volume",
+      "Name": "Application volume / Play-Pause",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Knob"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.tracks",
+      "Name": "Previous / Next",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Knob"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.seek",
+      "Name": "Seek / context selection",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Knob"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.mode",
+      "Name": "Mode",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Keypad"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.player",
+      "Name": "Queue / Playlists / Desktop Home",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Keypad"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "org.streamdock.nowplaying.public.back",
+      "Name": "Back",
+      "Icon": "icon",
+      "States": [
+        {
+          "Image": "icon",
+          "ShowTitle": false
+        }
+      ],
+      "Controllers": [
+        "Keypad"
+      ],
+      "UserTitleEnabled": false,
+      "SupportedInMultiActions": false
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Stream Dock Now Playing contributors",
+  "Name": "Stream Dock Now Playing (source preview)",
+  "Icon": "icon",
+  "Category": "Now Playing OSS",
+  "CategoryIcon": "icon",
+  "Description": "Windows GSMTC media controller, Desktop widgets and optional experimental integrations",
+  "Version": "1.2.0",
+  "CodePath": "launch.bat",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "2.9.172.0"
+  }
+}

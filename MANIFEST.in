@@ -1,0 +1,10 @@
+include README.ja.md CONTRIBUTING.md CHANGELOG.md SECURITY.md requirements.txt
+recursive-include docs *.md *.svg
+recursive-include plugin *.json *.svg
+recursive-include examples *.json
+recursive-include tools *.py
+recursive-include tests *.py
+recursive-include .github *.md *.yml
+
+recursive-include extensions *.js *.html *.json *.md
+recursive-include tests *.mjs

@@ -1,0 +1,58 @@
+{
+  "preferred_source": "",
+  "audio_mappings": [],
+  "spotify": {
+    "enabled": false,
+    "client_id": "",
+    "redirect_uri": "http://127.0.0.1:8765/callback",
+    "auto_volume": true
+  },
+  "youtube": {
+    "enabled": false,
+    "video_enabled": false,
+    "open_on_enter": true,
+    "source": "Chrome",
+    "process_name": "chrome.exe",
+    "video_port": 8766
+  },
+  "desktop": {
+    "weather": {
+      "location": "市川市",
+      "latitude": 35.7219,
+      "longitude": 139.931,
+      "refresh_seconds": 900
+    },
+    "items": [
+      {
+        "cell": 0,
+        "type": "clock"
+      },
+      {
+        "cell": 1,
+        "type": "weather"
+      },
+      {
+        "cell": 2,
+        "type": "laundry"
+      },
+      {
+        "cell": 3,
+        "type": "app_launcher",
+        "label": "APP 1",
+        "target": ""
+      },
+      {
+        "cell": 4,
+        "type": "app_launcher",
+        "label": "APP 2",
+        "target": ""
+      },
+      {
+        "cell": 5,
+        "type": "app_launcher",
+        "label": "APP 3",
+        "target": ""
+      }
+    ]
+  }
+}

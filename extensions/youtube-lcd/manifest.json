@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "AKP03J YouTube LCD — Direct Video Prototype",
+  "version": "0.4.7",
+  "description": "Send YouTube video frames to the local DEV LCD receiver without tab sharing.",
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["http://127.0.0.1/*", "https://www.youtube.com/*"],
+  "background": {"service_worker": "worker.js", "type": "module"},
+  "action": {"default_title": "AKP03Jへ動画表示：開始／停止"},
+  "options_page": "options.html",
+  "content_scripts": [{"matches": ["https://www.youtube.com/*"], "js": ["channel.js", "video.js"], "run_at": "document_idle"}]
+}

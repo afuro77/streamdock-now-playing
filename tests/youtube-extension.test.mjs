@@ -1,0 +1,68 @@
+import {strict as assert} from 'node:assert';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const root=new URL('../extensions/youtube-lcd/',import.meta.url);
+const code=await readFile(new URL('protocol.js',root),'utf8');
+const {parseSession,youtubeURL,decodeFrame}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
+assert.equal(parseSession('http://127.0.0.1:8766/#'+'a'.repeat(43)).base,'http://127.0.0.1:8766');
+for(const url of ['https://evil.example/#'+'a'.repeat(43),'http://localhost:8766/#'+'a'.repeat(43),'http://127.0.0.1:8766/','http://user:password@127.0.0.1/#'+'a'.repeat(43)])assert.throws(()=>parseSession(url));
+assert.equal(youtubeURL('https://www.youtube.com/watch?v=test'),true);
+for(const url of ['https://www.youtube.com.evil.example/','http://www.youtube.com/','chrome://extensions'])assert.equal(youtubeURL(url),false);
+assert.equal(decodeFrame('data:image/jpeg;base64,/9j/2Q==').length,4);
+for(const data of ['data:image/png;base64,AAAA','data:image/jpeg;base64,%%%','x'.repeat(270001)])assert.throws(()=>decodeFrame(data));
+const manifest=JSON.parse(await readFile(new URL('manifest.json',root),'utf8'));
+assert.deepEqual(manifest.permissions,['storage','scripting']);
+assert.equal(manifest.permissions.includes('tabCapture'),false);
+const messages=[];let interval;
+const canvas={width:0,height:0,getContext:()=>({fillRect(){},drawImage(){}}),toDataURL(){throw Object.assign(Error('tainted'),{name:'SecurityError'})}};
+let probe;
+const context=vm.createContext({location:{href:'https://www.youtube.com/watch?v=abcdefghijk'},document:{createElement:()=>canvas,querySelectorAll:()=>[],querySelector:()=>({readyState:4,videoWidth:1920,videoHeight:1080})},chrome:{runtime:{id:'test-extension',onMessage:{addListener:fn=>probe=fn},sendMessage:async m=>{messages.push(m);return {enabled:true}}}},setInterval:fn=>interval=fn});
+vm.runInContext(await readFile(new URL('video.js',root),'utf8'),context);
+await interval();assert.equal(messages[1].type,'failure');assert.equal(messages.some(m=>m.type==='frame'),false);
+canvas.toDataURL=()=> 'data:image/jpeg;base64,/9j/2Q==';messages.length=0;
+await interval();assert.equal(messages[1].type,'frame');
+assert.equal(messages[1].targetFps,12);
+let result;
+probe({type:'probe-video'},{id:'test-extension'},v=>result=v);assert.equal(result.readable,true);
+canvas.toDataURL=()=>{throw Object.assign(Error('tainted'),{name:'SecurityError'})};
+probe({type:'probe-video'},{id:'test-extension'},v=>result=v);assert.equal(result.readable,false);
+canvas.toDataURL=()=> 'data:image/jpeg;base64,/9j/2Q==';messages.length=0;
+let releaseUpload;
+context.chrome.runtime.sendMessage=async m=>{messages.push(m);if(m.type==='frame')return new Promise(resolve=>releaseUpload=resolve);return {enabled:true};};
+const pendingTick=interval();await new Promise(resolve=>setImmediate(resolve));
+await interval();assert.equal(messages.filter(m=>m.type==='frame').length,1);
+releaseUpload({ok:true});await pendingTick;
+context.chrome.runtime.sendMessage=async m=>{messages.push(m);return {enabled:true};};
+await interval();assert.equal(messages.filter(m=>m.type==='frame').length,2);
+for(const name of ['video.js','worker.js','options.js']) {
+ const source=await readFile(new URL(name,root),'utf8');
+ assert.equal(/getDisplayMedia|tabCapture|chooseDesktopMedia/.test(source),false);
+}
+console.log('PASS: protocol validation, URL boundaries, payload validation, narrow permissions, canvas failure/success, no tab-sharing calls');
+const readerCode=await readFile(new URL('reader.js',root),'utf8');
+const {ensureReader}=await import('data:text/javascript;base64,'+Buffer.from(readerCode).toString('base64'));
+let injected=0,probes=0;
+const api={tabs:{sendMessage:async()=>{probes++;if(!injected)throw Error('Receiving end does not exist');return {reader:true,readable:true};}},scripting:{executeScript:async args=>{assert.equal(args.target.tabId,9);assert.deepEqual(args.files,['channel.js','video.js']);injected++;}}};
+assert.equal((await ensureReader({id:9,url:'https://www.youtube.com/watch?v=test'},api)).injected,true);
+assert.equal(injected,1);assert.equal(probes,2);
+await ensureReader({id:9,url:'https://www.youtube.com/'},api);assert.equal(injected,1);
+await assert.rejects(()=>ensureReader({id:9,url:'https://evil.example/'},api));
+const blocked={tabs:{sendMessage:async()=>{throw Error('no receiver');}},scripting:{executeScript:async()=>{throw Error('Cannot access contents of the page');}}};
+await assert.rejects(()=>ensureReader({id:9,url:'https://www.youtube.com/'},blocked),/Cannot access/);
+console.log('PASS: missing reader recovery, no duplicate injection, YouTube-only boundary, denied permission reporting');
+let changed,nextTimer=0;const activeTimers=new Map();
+const fpsContext=vm.createContext({document:{createElement:()=>canvas},chrome:{runtime:{onMessage:{addListener(){}}},storage:{local:{get:async()=>({targetFps:8})},onChanged:{addListener:fn=>changed=fn}}},
+  setInterval:(fn,ms)=>{const id=++nextTimer;activeTimers.set(id,ms);return id;},clearInterval:id=>activeTimers.delete(id)});
+vm.runInContext(await readFile(new URL('video.js',root),'utf8'),fpsContext);
+assert.deepEqual([...activeTimers.values()],[83]);await Promise.resolve();
+assert.deepEqual([...activeTimers.values()],[125]);
+changed({targetFps:{newValue:10}},'local');assert.deepEqual([...activeTimers.values()],[100]);
+changed({targetFps:{newValue:12}},'local');assert.deepEqual([...activeTimers.values()],[83]);
+for(const value of [15,20,24,30,40,45,50,60,75,90,120]){
+ changed({targetFps:{newValue:value}},'local');
+ assert.deepEqual([...activeTimers.values()],[Math.round(1000/value)]);
+}
+changed({targetFps:{newValue:4}},'local');assert.deepEqual([...activeTimers.values()],[250]);
+changed({targetFps:{newValue:999}},'local');assert.deepEqual([...activeTimers.values()],[83]);
+changed({targetFps:{newValue:4}},'sync');assert.deepEqual([...activeTimers.values()],[83]);
+console.log('PASS: live frame-rate changes, default/saved values, invalid-value fallback and one active timer');

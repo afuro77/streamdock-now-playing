@@ -1,0 +1,6 @@
+{
+  "preferred_source": "spotify",
+  "audio_mappings": [
+    {"source_contains": "spotify", "process_name": "Spotify.exe"}
+  ]
+}
