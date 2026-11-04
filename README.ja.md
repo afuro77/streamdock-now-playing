@@ -2,6 +2,30 @@
 
 [English README（正文）](README.md)
 
+**仕事の画面を切り替えず、手元のAKP03Jで音楽を操作する。**
+左4枚にジャケット、右2枚に曲情報と再生状態。ノブで再生操作ができます。
+
+![6 LCDとノブの構成図。オリジナルのサンプル画像](docs/assets/overview.svg)
+
+※構成イメージです。実機写真・実演動画ではありません。
+
+**[認証なしで試す手順はこちら →](docs/QUICKSTART.ja.md)**
+
+最初のジャケット表示とPlay/Pauseには、Spotify Developer登録やOAuthは不要です。
+Windows 11・Python 3.12以降・Stream Dock AJAZZが必要です。
+初回導入補助は `python tools/quickstart.py --check` で確認し、
+ホストを終了してから `python tools/quickstart.py --install` を実行します。
+既存プラグインや環境は上書きしません。詳細と失敗時の復旧はガイドを参照してください。
+アプリ音量は別途 `audio_mappings` の設定が必要です。
+Queue／Connect／YouTubeは追加設定を行う任意機能です。
+
+## AKP03Jを持っている方へ
+
+まずは「別の所有者が導入し、ジャケット表示とPlay/Pauseを確認できること」を目指しています。
+[実機確認の報告](https://github.com/afuro77/streamdock-now-playing/issues/new?template=hardware_trial.md)に
+機種・ホスト版・導入結果を記入してもらえると助かります。
+別PCへの新規導入はまだ実機確認待ちです。認証情報・個人パス・runtimeは添付しないでください。
+
 Windows GSMTCとStream Dock互換デバイスを利用するNow Playing／メディアコントローラーです。
 AJAZZ AKP03J（ホスト表記AKP03E_3220）で開発しています。
 

@@ -2,6 +2,24 @@
 
 [日本語](README.ja.md)
 
+**Control your music without switching away from your work screen.**
+Turn an AJAZZ AKP03J into a hands-on media controller: artwork on four LCDs,
+track/status on two, and playback under your fingers.
+
+![Illustrated six-LCD layout with original sample artwork](docs/assets/overview.svg)
+
+*Illustration with sample data, not a device photograph or recorded demo.*
+
+**[Try Now Playing without API credentials →](docs/QUICKSTART.md)** ·
+[日本語で導入](docs/QUICKSTART.ja.md) ·
+[Report your hardware test](https://github.com/afuro77/streamdock-now-playing/issues/new?template=hardware_trial.md)
+
+Start with local Spotify desktop playback. You do **not** need a Spotify developer
+account for GSMTC artwork and playback controls. Queue/Connect and YouTube are
+optional integrations with additional setup and limitations. Application volume
+requires an audio mapping. Windows 11, Python 3.12+ and the separate AJAZZ host
+are required; this is still a source preview, not a one-click device installer.
+
 A Windows **Now Playing / Media Controller** for Stream Dock compatible devices.
 Built around Windows GSMTC, application audio sessions, six LCD keys and rotary
 encoders. Developed on an AJAZZ AKP03J, reported as `AJAZZ AKP03E_3220` by the host.
@@ -38,10 +56,24 @@ YouTube playback speed: press the right small knob, rotate to adjust, and wait f
 
 ## Start here
 
-1. Read [installation, configuration and removal](docs/INSTALL.md).
-2. Install Windows dependencies and the Stream Dock AJAZZ host separately.
-3. Create an isolated profile/plugin using the supplied template and source deployer.
-4. Start with GSMTC. Configure optional features only after reading their conditions.
+1. Follow the [credential-free first-try guide](docs/QUICKSTART.md).
+2. With the host closed, run `python tools/quickstart.py --check`, then
+   `python tools/quickstart.py --install` from a fresh extracted source folder.
+3. Start the host, select **Now Playing OSS Preview**, and test artwork + Play/Pause.
+4. Add [app actions](docs/APP_LAUNCHERS.md) and [optional integrations](docs/INSTALL.md)
+   after basic playback works. See [removal](docs/INSTALL.md#uninstall) for rollback.
+
+The helper refuses existing installations and never stops the host automatically.
+It is not an updater. Keep the source folder in place. See the full guide for
+existing Python environments, nondefault host paths or a partially failed setup.
+
+### Help verify another AKP03J
+
+The first goal is a successful install by another owner. Please report your exact
+model/host version, installation result, artwork and Play/Pause result using the
+[hardware-trial template](https://github.com/afuro77/streamdock-now-playing/issues/new?template=hardware_trial.md).
+Clean-PC installation remains unverified; no broader compatibility is claimed.
+Please exclude tokens, local paths, runtime folders and private media.
 
 The deployment namespace is `org.streamdock.nowplaying.public`. It is distinct
 from stable v1 and the private DEV installation; existing profiles are not edited.

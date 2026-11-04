@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+  <title id="title">Stream Dock Now Playing — six LCDs and three knobs</title>
+  <desc id="desc">Illustrated layout: four artwork tiles, track information, playback status, volume, previous/next and seek knobs. Original sample art; not a device photograph.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102b2a"/><stop offset="1" stop-color="#0c151e"/></linearGradient>
+    <linearGradient id="art" x2="1" y2="1"><stop stop-color="#f4be76"/><stop offset=".45" stop-color="#d58079"/><stop offset="1" stop-color="#405f88"/></linearGradient>
+  </defs>
+  <rect width="1000" height="470" rx="24" fill="url(#bg)"/>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#f1faf7">
+    <text x="36" y="44" font-size="26" font-weight="700">Your media. Within reach.</text>
+    <text x="36" y="73" font-size="15" fill="#aec8c3">Windows Now Playing • Desktop widgets • Optional browser integration</text>
+    <rect x="31" y="97" width="567" height="335" rx="22" fill="#202a33" stroke="#49625f"/>
+    <rect x="48" y="116" width="246" height="246" rx="10" fill="url(#art)"/>
+    <circle cx="129" cy="182" r="40" fill="#ffe4a3"/>
+    <path d="M48 300L120 224L196 284L254 203L294 246V362H48Z" fill="#264f65"/>
+    <path d="M48 333L132 277L204 331L294 273V362H48Z" fill="#163e48"/>
+    <rect x="166" y="115" width="10" height="248" fill="#202a33"/>
+    <rect x="47" y="234" width="248" height="10" fill="#202a33"/>
+    <rect x="304" y="116" width="118" height="118" rx="8" fill="#10261f"/>
+    <text x="313" y="146" font-size="22" font-weight="700">Evening</text>
+    <text x="313" y="174" font-size="22" font-weight="700">Light</text>
+    <text x="313" y="207" font-size="15" fill="#b7d6cb">Demo Artist</text>
+    <rect x="304" y="244" width="118" height="118" rx="8" fill="#10261f"/>
+    <text x="313" y="281" font-size="28" font-weight="700">PLAY</text>
+    <text x="313" y="321" font-size="28">1:24</text>
+    <rect x="314" y="343" width="95" height="5" rx="2" fill="#345346"/>
+    <rect x="314" y="343" width="39" height="5" rx="2" fill="#71cbaa"/>
+    <circle cx="511" cy="169" r="48" fill="#14232a" stroke="#71cbaa" stroke-width="4"/>
+    <path d="M511 126V139" stroke="#d5f7e5" stroke-width="4" stroke-linecap="round"/>
+    <text x="511" y="176" text-anchor="middle" font-size="18">VOL</text>
+    <circle cx="468" cy="294" r="29" fill="#14232a" stroke="#93aaa4" stroke-width="3"/>
+    <circle cx="547" cy="294" r="29" fill="#14232a" stroke="#93aaa4" stroke-width="3"/>
+    <text x="468" y="300" text-anchor="middle" font-size="15">PREV</text>
+    <text x="547" y="300" text-anchor="middle" font-size="15">SEEK</text>
+    <g fill="#3a4c54"><rect x="48" y="384" width="118" height="26" rx="6"/><rect x="176" y="384" width="118" height="26" rx="6"/><rect x="304" y="384" width="118" height="26" rx="6"/></g>
+    <text x="107" y="402" text-anchor="middle" font-size="12">MODE</text>
+    <text x="235" y="402" text-anchor="middle" font-size="12">QUEUE / HOME</text>
+    <text x="363" y="402" text-anchor="middle" font-size="12">BACK</text>
+    <text x="640" y="143" font-size="23" font-weight="700" fill="#71cbaa">1 · See what is playing</text>
+    <text x="640" y="174" font-size="17">Artwork + track + playback status</text>
+    <text x="640" y="228" font-size="23" font-weight="700" fill="#71cbaa">2 · Keep your hands here</text>
+    <text x="640" y="259" font-size="17">Volume, Play/Pause, tracks, seek</text>
+    <text x="640" y="313" font-size="23" font-weight="700" fill="#71cbaa">3 · Add what you need</text>
+    <text x="640" y="344" font-size="17">Widgets, app actions, optional services</text>
+    <text x="640" y="417" font-size="13" fill="#aec8c3">Illustration • sample data • not a hardware screenshot</text>
+    <text x="36" y="454" font-size="12" fill="#aec8c3">Developed on AJAZZ AKP03J / AKP03E_3220. Other device layouts are not verified.</text>
+  </g>
+</svg>

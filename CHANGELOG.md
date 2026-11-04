@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add an illustrated introduction, English/Japanese credential-free quickstart,
+  first-install helper with read-only checks, and a hardware-trial issue template.
+  Existing plugin/runtime/environment directories are refused rather than replaced.
+
 - YouTube: press the right small knob to adjust playback speed with rotation in
   0.25 steps (0.25–2x). Speed appears only during adjustment; five seconds after
   the last operation, the knob returns to seek. Extension 0.4.10 is required.

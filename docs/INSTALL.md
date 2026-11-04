@@ -1,5 +1,8 @@
 # Source installation and removal
 
+First installation? Start with the shorter [credential-free quickstart](QUICKSTART.md)
+([日本語](QUICKSTART.ja.md)). This page covers manual setup, optional services and removal.
+
 This is an experimental Windows source deployment. The public namespace/profile
 has not been verified by installing onto a clean PC; do not replace a working
 profile. First read [limitations](KNOWN_LIMITATIONS.md) and [service conditions](SERVICES.md).
