@@ -37,6 +37,8 @@ class YouTubeBrowser:
         self.has_more=False;self.catalog_limit=1000;self.empty_pages=0
         self.known_tab=None;self.current_channel=None
         self.foreground_until=None
+        self.speed_result=None
+        self.speed_steps=0
         self.focus_uri=None;self.focus_pending=False;self.focus_status='none';self.current_position=None;self.channel_reason='none'
 
     def register(self,data):
@@ -48,7 +50,9 @@ class YouTubeBrowser:
             old=self.known_tab
             priority=2 if data.get('selected') is True else 1 if data.get('active') is True else 0
             if old is None or old['tab']==tab or self.clock()-old['seen']>15 or priority>old.get('priority',0):
-                self.known_tab={'tab':tab,'url':page,'seen':self.clock(),'priority':priority}
+                rate=data.get('rate')
+                rate=rate if type(rate) in (int,float) and .25<=rate<=4 else None
+                self.known_tab={'tab':tab,'url':page,'seen':self.clock(),'priority':priority,'rate':rate}
             if self.foreground_until is not None:
                 if self.clock()>self.foreground_until:self.foreground_until=None
                 elif self.known_tab['tab']==tab and not self.pending:
@@ -110,7 +114,7 @@ class YouTubeBrowser:
             self.focus_uri=None;self.focus_pending=False;self.focus_status='none';self.current_position=None
 
     def close_view(self):
-        with self.lock:self.active=False;self.pending=None;self.completed=None;self.expected_page=None;self.focus_pending=False;self.foreground_until=None
+        with self.lock:self.active=False;self.pending=None;self.completed=None;self.expected_page=None;self.focus_pending=False;self.foreground_until=None;self.speed_steps=0
 
     def diagnostics(self):
         with self.lock:return {'active':self.active,'count':len(self.items),'has_more':self.has_more,'missing_titles':sum(i['title'] in ('YouTube','Title unavailable') for i in self.items),'offset':self.offset,'pending':bool(self.pending),'message':self.message,'initial_focus':self.focus_status,'current_position':self.current_position,'channel_reason':self.channel_reason,'has_channel_info':self.current_channel is not None,'channel_info_age':round(self.clock()-self.current_channel['seen'],1) if self.current_channel else None}
@@ -118,8 +122,46 @@ class YouTubeBrowser:
     def state(self):
         with self.lock:
             if self.pending and self.clock()-self.pending['time']>15:
+                if self.pending.get('kind')=='speed':self.speed_result='SPEED ERROR';self.speed_steps=0
                 kind=self.pending.get('kind','play');self.pending=None;self.message='LOAD TIMEOUT' if kind in ('channel','channel-more','list-more') else 'PLAY TIMEOUT'
-            return {'browse':self.active,'command':{k:v for k,v in self.pending.items() if k!='time'} if self.pending and (self.active or self.pending.get('kind')=='focus') else None}
+            return {'browse':self.active,'command':{k:v for k,v in self.pending.items() if k!='time'} if self.pending and (self.active or self.pending.get('kind') in ('focus','speed')) else None}
+
+    def cycle_speed(self):
+        with self.lock:
+            if self.pending:return False
+            tab=self.known_tab
+            if not tab or self.clock()-tab['seen']>15:return False
+            try:page=video_url(tab['url'])
+            except ValueError:return False
+            self.pending={'id':secrets.token_hex(8),'kind':'speed','url':page,'tab':tab['tab'],'time':self.clock()}
+            return True
+
+    def playback_rate(self):
+        with self.lock:
+            tab=self.known_tab
+            if not tab or self.clock()-tab['seen']>5:return None
+            try:video_url(tab['url'])
+            except ValueError:return None
+            return tab.get('rate')
+
+    def adjust_speed(self,steps):
+        if type(steps) is not int or not steps:return False
+        with self.lock:
+            if self.pending:
+                if self.pending.get('kind')!='speed':return False
+                self.speed_steps=max(-8,min(8,self.speed_steps+steps));return True
+            tab=self.known_tab
+            if not tab or self.clock()-tab['seen']>15:return False
+            try:page=video_url(tab['url'])
+            except ValueError:return False
+            self.pending={'id':secrets.token_hex(8),'kind':'speed','steps':max(-8,min(8,steps)),'url':page,'tab':tab['tab'],'time':self.clock()}
+            return True
+
+    def take_speed_result(self):
+        self.state()
+        with self.lock:
+            result=self.speed_result;self.speed_result=None
+            return result
 
     def publish(self,data):
         if not isinstance(data,dict) or type(data.get('tab')) is not int or data['tab']<0 or not isinstance(data.get('items'),list) or len(data['items'])>100:raise ValueError('Invalid catalog')
@@ -198,7 +240,18 @@ class YouTubeBrowser:
     def acknowledge(self,data):
         if type(data.get('ok')) is not bool:raise ValueError('Expected playback result')
         with self.lock:
-            if not self.pending or data.get('id')!=self.pending['id'] or (not self.active and self.pending.get('kind')!='focus'):return False
+            if not self.pending or data.get('id')!=self.pending['id'] or (not self.active and self.pending.get('kind') not in ('focus','speed')):return False
+            if self.pending.get('kind')=='speed':
+                previous=self.pending
+                rate=data.get('rate')
+                self.speed_result=f'SPEED {rate:g}x' if data['ok'] and type(rate) in (int,float) and .25<=rate<=2 else 'SPEED ERROR'
+                if self.speed_result!='SPEED ERROR' and self.known_tab and self.known_tab['tab']==self.pending['tab'] and self.known_tab['url']==self.pending['url']:
+                    self.known_tab.update(rate=rate,seen=self.clock())
+                self.pending=None
+                if self.speed_steps and self.speed_result!='SPEED ERROR' and self.known_tab and self.known_tab['tab']==previous['tab'] and self.known_tab['url']==previous['url']:
+                    self.pending={**previous,'id':secrets.token_hex(8),'steps':self.speed_steps,'time':self.clock()}
+                self.speed_steps=0
+                return True
             if self.pending.get('kind')=='focus':self.pending=None;return True
             if self.pending.get('kind') in ('channel','channel-more','list-more'):
                 if data['ok']:return True

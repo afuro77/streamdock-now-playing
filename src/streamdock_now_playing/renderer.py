@@ -9,6 +9,26 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 def encode(image):
  b=io.BytesIO(); image.save(b,'PNG'); return 'data:image/png;base64,'+base64.b64encode(b.getvalue()).decode()
 
+
+def playback_rate_text(rate):
+    return f'{rate:g}x' if type(rate) in (int,float) and math.isfinite(rate) and .25<=rate<=4 else '--x'
+
+
+def speed_badge(tiles, rate, adjusting=False):
+    """YouTube-only badge; never modify the shared/captured frame in place."""
+    result=list(tiles)
+    image=Image.open(io.BytesIO(base64.b64decode(result[5].split(',',1)[1]))).convert('RGB')
+    draw=ImageDraw.Draw(image);text=playback_rate_text(rate);font=_font(22,True)
+    width=int(font.getlength(text))+12
+    if adjusting:
+        width=max(width,90)
+        draw.rectangle((128-width,82,127,127),fill='#10261f')
+        draw.text((128-width+6,84),'SPEED',font=_font(14,True),fill='white',anchor='lt')
+    else:draw.rectangle((128-width,99,127,127),fill='#10261f')
+    draw.text((128-width+6,102),text,font=font,fill='#71cbaa',anchor='lt')
+    result[5]=encode(image)
+    return result
+
 def tiles(data):
  im=Image.open(io.BytesIO(data)).convert('RGB') if data else Image.new('RGB',(384,256),'#142b25')
  # Fit preserves the square cover's proportions, cropping top/bottom to fill 3:2.
@@ -283,9 +303,12 @@ class LayoutRenderer:
         playing = snapshot.get('playing')
         label = 'PLAY' if playing is True else 'PAUSE' if playing is False else 'READY'
         size = self.settings.status_font_size
+        if 'playback_rate' in snapshot:size=min(size,32)
         while size > 16 and _font(size, True).getlength(label) > 120:
             size -= 1
         draw.text((4, 8), label, font=_font(size, True), fill='white', anchor='lt')
+        if 'playback_rate' in snapshot:
+            draw.text((4, 42), playback_rate_text(snapshot['playback_rate']), font=_font(20,True),fill='#71cbaa',anchor='lt')
         position, duration = _seconds(snapshot.get('position')), _seconds(snapshot.get('duration'))
         time_text = clock_text(position)
         size = self.settings.time_font_size

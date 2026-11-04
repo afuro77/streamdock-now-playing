@@ -69,7 +69,8 @@ class FrameTests(unittest.TestCase):
         mode=YouTubeMode();mode.capture=self.receiver
         self.receiver.enabled=lambda:mode.view=='artwork'
         mode.view='artwork';self.receiver.accept(jpeg())
-        self.assertEqual(mode.frame(),self.receiver.latest())
+        displayed=mode.frame();raw=self.receiver.latest()
+        self.assertEqual(displayed,raw)
         mode.home();self.assertIsNone(self.receiver.latest())
         self.assertEqual(len(mode.frame()),6)
 

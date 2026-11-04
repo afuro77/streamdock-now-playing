@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AKP03J YouTube LCD — Direct Video Prototype",
-  "version": "0.4.7",
+  "version": "0.4.10",
   "description": "Send YouTube video frames to the local DEV LCD receiver without tab sharing.",
   "permissions": ["storage", "scripting"],
   "host_permissions": ["http://127.0.0.1/*", "https://www.youtube.com/*"],

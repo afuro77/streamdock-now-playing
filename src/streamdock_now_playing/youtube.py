@@ -7,7 +7,7 @@ import time
 from .media import GSMTCMedia
 from .controller import MediaService
 from .audio import AudioSessions
-from .renderer import LayoutRenderer, operation_feedback
+from .renderer import LayoutRenderer, operation_feedback, speed_badge, playback_rate_text
 from .browser_launcher import BrowserLauncher
 from .youtube_browser import YouTubeBrowser
 
@@ -31,6 +31,8 @@ class YouTubeMode:
         self.browser_return='normal'
         self.held_video=None
         self.initial_view_pending=True
+        self.speed_adjust_until=0
+        self.speed_adjust_seconds=float(settings.get('speed_adjust_seconds',5))
 
     def enter(self):
         self.home()
@@ -55,12 +57,14 @@ class YouTubeMode:
                 with self.browser.lock:self.browser.message='CHROME ERROR'
 
     def home(self):
+        self.speed_adjust_until=0
         self.view='normal';self.feedback='';self.until=0
         self.held_video=None
         self.browser.close_view()
         self.browser_return='normal'
 
     def open_browser(self):
+        self.speed_adjust_until=0
         self.browser.open();self.view='browser';self.browser_return='normal';self.last_input=self.clock()
 
     def has_video(self):
@@ -68,6 +72,10 @@ class YouTubeMode:
         return watch if watch is not None else bool(self.snapshot.get('source') and self.snapshot.get('key'))
 
     async def poll(self):
+        speed=self.browser.take_speed_result()
+        if speed=='SPEED ERROR' and self.clock()<self.speed_adjust_until:
+            self.feedback=speed;self.until=self.clock()+self.layout.settings.feedback_seconds
+            self.speed_adjust_until=0
         s=await self.service.snapshot()
         key=s.get('key')
         if key!=self.snapshot.get('key'):self.held_video=None
@@ -91,19 +99,27 @@ class YouTubeMode:
         if self.view=='metadata' and self.clock()-self.last_input>=self.layout.settings.expanded_timeout_seconds:self.home()
         if self.view=='browser':return self.browser.frame()
         s=dict(self.snapshot)
+        rate=self.browser.playback_rate()
         if not s.get('source'):
             s.update(title='YouTube',artist='Play in browser')
         if s.get('playing'):
-            s['position']=min(s.get('duration',0),s.get('position',0)+self.clock()-self.anchor)
+            s['position']=min(s.get('duration',0),s.get('position',0)+(self.clock()-self.anchor)*(rate or 1))
         if self.view=='artwork':
             if video:self.held_video=video
-            return self.held_video if self.held_video else self.expanded
-        if self.view=='metadata':return self.layout.expanded_metadata(s)
+            frame=self.held_video if self.held_video else self.expanded
+            return speed_badge(frame,rate,adjusting=True) if self.clock()<self.speed_adjust_until else frame
+        if self.view=='metadata':
+            frame=self.layout.expanded_metadata(s)
+            return speed_badge(frame,rate,adjusting=True) if self.clock()<self.speed_adjust_until else frame
         return self.layout.compose(self.artwork,s,
-            self.feedback if self.clock()<self.until else '')
+            'SPEED '+playback_rate_text(rate) if self.clock()<self.speed_adjust_until else self.feedback if self.clock()<self.until else '')
 
     async def input(self,role,event,ticks=0,tile=0):
         self.last_input=self.clock()
+        if role=='seek' and event=='dialDown':
+            if self.view!='browser':
+                self.speed_adjust_until=self.clock()+self.speed_adjust_seconds
+            return
         if role=='back' and event=='keyDown':
             if self.view=='browser' and self.browser_return=='metadata':
                 self.browser.close_view();self.view='metadata';self.browser_return='normal';return
@@ -111,6 +127,13 @@ class YouTubeMode:
         if self.view=='browser':
             if role=='seek' and event=='dialRotate':self.browser.move(ticks);return
             if role=='tile' and event=='keyDown':self.browser.select(tile);return
+        if role=='seek' and event=='dialRotate' and self.clock()<self.speed_adjust_until:
+            if ticks:
+                if not self.browser.adjust_speed(ticks):
+                    self.feedback='SPEED UNAVAILABLE';self.until=self.clock()+2.5
+                    self.speed_adjust_until=0
+                else:self.speed_adjust_until=self.clock()+self.speed_adjust_seconds
+            return
         if role=='tile' and event=='keyDown':
             if self.view=='metadata' and tile>=3:
                 self.browser.open_current_channel(str(self.snapshot.get('title') or ''))

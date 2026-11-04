@@ -32,7 +32,8 @@ const measured=await send({type:'fps-sample'},{id:'test',url:chrome.runtime.getU
 assert.equal(measured.frames,200);assert.equal(measured.configuredTarget,12);assert.equal(measured.sampleTime,10);
 assert.equal('token' in measured,false);
 assert.equal(listener({type:'fps-sample'},{id:'other',url:chrome.runtime.getURL('options.html')},()=>{}),false);
-await Promise.all([send({type:'state',pageURL:'https://www.youtube.com/'}),send({type:'state',pageURL:'https://www.youtube.com/'})]);
+await Promise.all([send({type:'state',pageURL:'https://www.youtube.com/',playbackRate:1.5}),send({type:'state',pageURL:'https://www.youtube.com/',playbackRate:1.5})]);
+assert.equal(posts.find(p=>p.url.endsWith('/register')).data.rate,1.5);
 assert.equal(navigations,1);assert.equal(store.selectedTab,9);
 assert.equal(windowChanges[0].state,'normal');assert.equal(windowChanges[1].focused,true);
 store.pendingPlay.at=Date.now()-2500;
@@ -82,7 +83,7 @@ function modernRow(id,heading,linkText,aria=''){
  return {querySelectorAll:()=>[link],querySelector:selector=>selector.startsWith('#video-title')?{textContent:' \n ',getAttribute:()=> '   '}:selector.startsWith('h3')?(heading?{textContent:heading,getAttribute:()=>''}:null):{textContent:'Channel'}};
 }
 nodes.push(modernRow('abcdefghij2','',''),modernRow('abcdefghij2','Heading title',''),modernRow('abcdefghij3','','Readable link'),modernRow('abcdefghij4','','','Accessible title'));
-const page=vm.createContext({URL,Date,location:{href:'https://www.youtube.com/'},document:{querySelectorAll:()=>nodes,createElement:()=>({getContext:()=>({})})},
+const page=vm.createContext({URL,Date,location:{href:'https://www.youtube.com/'},document:{querySelector:()=>null,querySelectorAll:()=>nodes,createElement:()=>({getContext:()=>({})})},
   chrome:{runtime:{id:'test',onMessage:{addListener:f=>moreListener=f},sendMessage:async m=>{messages.push(m);return {browse:true,selected:false};}}},setInterval:fn=>tick=fn,setTimeout:fn=>fn()});
 vm.runInContext(await readFile(new URL('video.js',root),'utf8'),page);
 await tick();const catalog=messages.find(m=>m.type==='catalog');
@@ -96,3 +97,15 @@ assert.equal(page.location.href,'https://www.youtube.com/');
 const stale=await new Promise(resolve=>moreListener({type:'fetch-list-more',url:'https://www.youtube.com/watch?v=abcdefghijk'},{id:'test'},resolve));
 assert.match(stale.error,/changed/);
 console.log('PASS: rendered catalog extraction/deduplication, selected-video navigation, command deduplication, playback acknowledgement, failed navigation, catalog without capture selection');
+command.id='speed-command';command.kind='speed';command.url=tabURL;
+const beforeSpeed=navigations,previousMessage=chrome.tabs.sendMessage;
+chrome.tabs.sendMessage=async(id,message)=>{assert.equal(id,9);assert.equal(message.type,'cycle-speed');return {ok:true,rate:1.25};};
+await send({type:'state',pageURL:tabURL});
+assert.equal(navigations,beforeSpeed);
+assert.equal(posts.filter(p=>p.url.endsWith('/ack')).at(-1).data.rate,1.25);
+await send({type:'state',pageURL:tabURL});assert.equal(navigations,beforeSpeed);
+command.id='speed-error';chrome.tabs.sendMessage=async()=>{throw Error('missing video');};
+await send({type:'state',pageURL:tabURL});
+assert.equal(posts.filter(p=>p.url.endsWith('/ack')).at(-1).data.ok,false);
+chrome.tabs.sendMessage=previousMessage;
+console.log('PASS: speed routing/ack, deduplication, no navigation and failure handling');

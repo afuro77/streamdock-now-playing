@@ -142,8 +142,9 @@ class YouTubeTests(unittest.IsolatedAsyncioTestCase):
             def latest(self):return self.frame
         capture=Capture();mode.capture=capture
         await mode.input('tile','keyDown',tile=0)
-        self.assertEqual(mode.frame(),['frame']*6)
-        capture.frame=None;self.assertEqual(mode.frame(),['frame']*6)
+        capture.frame=list(mode.expanded)
+        first=mode.frame();self.assertEqual(first,capture.frame)
+        capture.frame=None;self.assertEqual(mode.frame(),first)
         mode.service.s.update(key='new-video',title='New')
         await mode.poll();self.assertIsNone(mode.held_video)
         await mode.input('back','keyDown');self.assertIsNone(mode.held_video)

@@ -39,6 +39,12 @@ async function navigateCommand(config,command) {
     const target=await chrome.tabs.get(command.tab);
     if(!youtubeURL(target.url))throw Error('YouTube tab was closed or changed');
     await chrome.storage.session.set({lastCommand:command.id});
+    if(command.kind==='speed'){
+      await ensureReader(target,chrome);
+      const result=await chrome.tabs.sendMessage(command.tab,{type:'cycle-speed',url:command.url,steps:command.steps});
+      await browserPost(config,'ack',{id:command.id,ok:result?.ok===true,rate:result?.rate});
+      return;
+    }
     if(command.kind==='list-more'){
       await ensureReader(target,chrome);
       const result=await chrome.tabs.sendMessage(command.tab,{type:'fetch-list-more',url:command.url});
@@ -151,7 +157,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     if(message.type==='state') {
       if(youtubeURL(message.pageURL)&&Date.now()-(lastRegistration.get(sender.tab.id)||0)>2000){
         const selected=await chrome.storage.session.get('selectedTab');
-        await browserPost(config,'register',{tab:sender.tab.id,page:message.pageURL,active:sender.tab.active===true,selected:selected.selectedTab===sender.tab.id});
+        await browserPost(config,'register',{tab:sender.tab.id,page:message.pageURL,rate:message.playbackRate,active:sender.tab.active===true,selected:selected.selectedTab===sender.tab.id});
         lastRegistration.set(sender.tab.id,Date.now());
       }
       const response=await fetch(config.base+'/state',{headers,signal:AbortSignal.timeout(2000)});

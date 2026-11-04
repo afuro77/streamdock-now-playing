@@ -66,3 +66,23 @@ changed({targetFps:{newValue:4}},'local');assert.deepEqual([...activeTimers.valu
 changed({targetFps:{newValue:999}},'local');assert.deepEqual([...activeTimers.values()],[83]);
 changed({targetFps:{newValue:4}},'sync');assert.deepEqual([...activeTimers.values()],[83]);
 console.log('PASS: live frame-rate changes, default/saved values, invalid-value fallback and one active timer');
+const speedVideo={duration:120,playbackRate:1};
+context.URL=URL;context.document.querySelector=()=>speedVideo;
+const speedMessage={type:'cycle-speed',url:'https://www.youtube.com/watch?v=abcdefghijk'};
+for(const expected of [1.25,1.5,1.75,2,.75,1]){
+ probe(speedMessage,{id:'test-extension'},v=>result=v);
+ assert.equal(result.ok,true);assert.equal(result.rate,expected);
+}
+probe({...speedMessage,url:'https://www.youtube.com/watch?v=12345678901'},{id:'test-extension'},v=>result=v);assert.equal(result.ok,false);
+speedVideo.duration=Infinity;
+probe(speedMessage,{id:'test-extension'},v=>result=v);assert.equal(result.ok,false);
+result=null;probe(speedMessage,{id:'other'},v=>result=v);assert.equal(result,null);
+console.log('PASS: actual video speed cycle, wrap, changed-video/live rejection and sender boundary');
+speedVideo.duration=120;speedVideo.playbackRate=1;
+for(const [steps,expected] of [[1,1.25],[-2,.75],[-8,.25],[8,2]]){
+ probe({...speedMessage,steps},{id:'test-extension'},v=>result=v);
+ assert.equal(result.ok,true);assert.equal(result.rate,expected);
+}
+for(const steps of [0,9,1.2,'1']){
+ probe({...speedMessage,steps},{id:'test-extension'},v=>result=v);assert.equal(result.ok,false);
+}

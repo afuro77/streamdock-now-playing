@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- YouTube: press the right small knob to adjust playback speed with rotation in
+  0.25 steps (0.25–2x). Speed appears only during adjustment; five seconds after
+  the last operation, the knob returns to seek. Extension 0.4.10 is required.
+
 - Make Japanese artist-wrapping regression tests independent of installed fonts.
   Windows CI runners without Meiryo use different fallback glyph widths; tests
   now supply known metrics and also check the one-row width boundary. Rendering

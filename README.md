@@ -34,6 +34,8 @@ that their use is authorized. A warning or opt-in does not override service term
 Do not use them where you lack permission. See [service notes](docs/SERVICES.md).
 Spotify API and YouTube integrations are disabled in the supplied default config.
 
+YouTube playback speed: press the right small knob, rotate to adjust, and wait five seconds to return to seek. See [speed controls](docs/YOUTUBE_SPEED.md). Reload extension **0.4.10** and the YouTube tab after updating.
+
 ## Start here
 
 1. Read [installation, configuration and removal](docs/INSTALL.md).

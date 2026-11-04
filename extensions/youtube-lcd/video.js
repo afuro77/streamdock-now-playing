@@ -63,6 +63,19 @@
     const result=[...items.values()];return tail?result.slice(-100):result;
   }
   chrome.runtime.onMessage.addListener((message,sender,reply)=>{
+    if(message.type==='cycle-speed'&&sender.id===chrome.runtime.id){
+      const video=document.querySelector('video.html5-main-video')||document.querySelector('video');
+      try{
+        const expected=new URL(message.url),current=new URL(location.href);
+        if(expected.origin!==current.origin||current.pathname!=='/watch'||expected.searchParams.get('v')!==current.searchParams.get('v')||!video||!Number.isFinite(video.duration))throw Error('Video unavailable or live');
+        const rates=[.75,1,1.25,1.5,1.75,2];
+        if(message.steps!==undefined&&(!Number.isInteger(message.steps)||message.steps===0||Math.abs(message.steps)>8))throw Error('Invalid speed step');
+        const rate=message.steps===undefined?(rates.find(value=>value>video.playbackRate+.01)??rates[0]):Math.max(.25,Math.min(2,Math.round((video.playbackRate+message.steps*.25)*100)/100));
+        video.playbackRate=rate;
+        reply({ok:Math.abs(video.playbackRate-rate)<.01,rate:video.playbackRate});
+      }catch{reply({ok:false});}
+      return false;
+    }
     if(message.type==='fetch-list-more'&&sender.id===chrome.runtime.id){
       (async()=>{
         const url=new URL(message.url);
@@ -118,7 +131,8 @@
   const tick=async()=>{
     if(busy)return;busy=true;
     try {
-      const state=await chrome.runtime.sendMessage({type:'state',pageURL:location.href});
+      const currentVideo=document.querySelector('video.html5-main-video')||document.querySelector('video');
+      const state=await chrome.runtime.sendMessage({type:'state',pageURL:location.href,playbackRate:currentVideo?.playbackRate});
       if(Date.now()-lastChannel>2000){const info=currentChannel();if(info)await chrome.runtime.sendMessage({type:'current-channel',pageURL:location.href,...info});lastChannel=Date.now();}
       if(state?.browse&&Date.now()-lastCatalog>2000){await chrome.runtime.sendMessage({type:'catalog',pageURL:location.href,items:catalog()});lastCatalog=Date.now();}
       if(state?.playRequest&&state.playRequest!==lastPlay) {
