@@ -39,6 +39,11 @@ that project and it is not a runtime dependency.
 
 ## Assets and services
 
+Vendor product photographs are referenced by external links only, not embedded,
+downloaded or redistributed with the project. See [hardware/photo sources](docs/HARDWARE.md).
+The English/Japanese overview SVGs are original explanatory drawings, not vendor
+photos or project hardware recordings.
+
 The SVG and Python-drawn generic pictograms are own-source assets. Windows fonts
 are loaded from the user's OS, not distributed. Steam/LINE/Codex/Spotify/YouTube
 logos and artwork remain their owners' property. Users supply any permitted

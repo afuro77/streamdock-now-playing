@@ -1,11 +1,17 @@
-# 最初は認証なしでNow Playingを試す
+# 最初はジャケット表示と再生・停止を試す
 
 [English](QUICKSTART.md) · [詳しい導入・削除手順](INSTALL.md)
 
 最初はPC上のSpotifyデスクトップ版で、ジャケット表示とPlay/Pauseだけ確認します。
-Spotify Developer登録、Client ID、OAuth、APIキー、Chrome拡張は不要です。
-QueueやConnect、YouTubeは基本動作を確認した後に追加します。
+Play/Pauseは再生／一時停止のことです。普段のSpotifyへのログインは必要ですが、
+開発者向けの登録・追加認証（Client IDやOAuth）、APIキー、Chrome拡張は不要です。
+次に再生する曲の一覧（Queue）や外部スピーカー操作（Spotify Connect）、YouTubeは、
+基本動作を確認した後に設定します。
 公開版はソースプレビューで、別PCへの新規導入の実機確認はまだ完了していません。
+
+使う機器はAJAZZのAKP03Jです。[公式ストアの製品写真・説明](https://store.shopping.yahoo.co.jp/ajazz/akp03j.html)
+で外観を確認できます。Stream Dock AJAZZは機器を動かすためのソフト、
+本プロジェクトはその中で動く追加ソフトです。
 
 ## 1. 準備
 
@@ -24,8 +30,10 @@ python tools/quickstart.py --install
 ```
 
 `python` が見つからない／Storeが開く場合は、`python` を `py -3.12` に置き換えてください。
-`--check` は確認のみでファイルを書き換えません。`--install` は専用 `.venv` と依存パッケージ、
-公開プラグイン、別プロファイル、runtimeを作成します。ホストやドライバーは同梱しません。
+`--check` は確認のみでファイルを書き換えません。`--install` は実行用の専用フォルダー `.venv`、
+必要なPythonパッケージ、追加ソフト、プロファイル、設定保存用のフォルダー（runtime）を作成します。
+プロファイルとは、ボタンの割当や画面の配置をまとめた設定です。
+Stream Dock AJAZZ本体（ホストと呼びます）やドライバーは同梱しません。
 Windowsの自動起動設定も変更しません。導入後もソースフォルダーは移動しないでください。
 
 ホストの初期保存先は `%APPDATA%\HotSpot\StreamDock`、runtimeは

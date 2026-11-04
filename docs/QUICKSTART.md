@@ -1,10 +1,16 @@
-# First try: Now Playing without a Spotify developer account
+# First try: album artwork and Play/Pause
 
 [日本語](QUICKSTART.ja.md) · [Full installation guide](INSTALL.md)
 
 Start with local playback and a separate public profile. Queue, Connect and
 YouTube are optional later steps. This preview still needs Python and the host;
 it is not a standalone installer. Clean-PC hardware acceptance is still pending.
+Your normal Spotify desktop login is needed; the first test does not require
+the additional developer-app authorization used by the optional Spotify API.
+
+The device is an AJAZZ AKP03J. See [actual product photos at the official store](https://store.shopping.yahoo.co.jp/ajazz/akp03j.html).
+Stream Dock AJAZZ is its separate host application. This project adds a plugin
+to that application; a profile groups the button assignments and screen layout.
 
 ## 1. Prepare
 

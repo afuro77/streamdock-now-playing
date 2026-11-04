@@ -7,7 +7,7 @@
   </defs>
   <rect width="1000" height="470" rx="24" fill="url(#bg)"/>
   <g font-family="Segoe UI,Arial,sans-serif" fill="#f1faf7">
-    <text x="36" y="44" font-size="26" font-weight="700">Your media. Within reach.</text>
+    <text x="36" y="44" font-size="26" font-weight="700">Music controls on your desk</text>
     <text x="36" y="73" font-size="15" fill="#aec8c3">Windows Now Playing • Desktop widgets • Optional browser integration</text>
     <rect x="31" y="97" width="567" height="335" rx="22" fill="#202a33" stroke="#49625f"/>
     <rect x="48" y="116" width="246" height="246" rx="10" fill="url(#art)"/>
@@ -36,11 +36,11 @@
     <text x="107" y="402" text-anchor="middle" font-size="12">MODE</text>
     <text x="235" y="402" text-anchor="middle" font-size="12">QUEUE / HOME</text>
     <text x="363" y="402" text-anchor="middle" font-size="12">BACK</text>
-    <text x="640" y="143" font-size="23" font-weight="700" fill="#71cbaa">1 · See what is playing</text>
+    <text x="640" y="143" font-size="23" font-weight="700" fill="#71cbaa">1 · Track and artwork</text>
     <text x="640" y="174" font-size="17">Artwork + track + playback status</text>
-    <text x="640" y="228" font-size="23" font-weight="700" fill="#71cbaa">2 · Keep your hands here</text>
+    <text x="640" y="228" font-size="23" font-weight="700" fill="#71cbaa">2 · Playback controls</text>
     <text x="640" y="259" font-size="17">Volume, Play/Pause, tracks, seek</text>
-    <text x="640" y="313" font-size="23" font-weight="700" fill="#71cbaa">3 · Add what you need</text>
+    <text x="640" y="313" font-size="23" font-weight="700" fill="#71cbaa">3 · Optional features</text>
     <text x="640" y="344" font-size="17">Widgets, app actions, optional services</text>
     <text x="640" y="417" font-size="13" fill="#aec8c3">Illustration • sample data • not a hardware screenshot</text>
     <text x="36" y="454" font-size="12" fill="#aec8c3">Developed on AJAZZ AKP03J / AKP03E_3220. Other device layouts are not verified.</text>

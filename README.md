@@ -2,40 +2,71 @@
 
 [日本語](README.ja.md)
 
-**Control your music without switching away from your work screen.**
-Turn an AJAZZ AKP03J into a hands-on media controller: artwork on four LCDs,
-track/status on two, and playback under your fingers.
+**Use an AJAZZ AKP03J to see what is playing and control Spotify from your desk.**
 
-![Illustrated six-LCD layout with original sample artwork](docs/assets/overview.svg)
+The device's six small screens show album artwork, track information and playback
+status. Its knobs and buttons control playback, track changes, seeking and volume,
+so you can keep working without opening the Spotify window. Application volume
+needs an audio mapping after installation.
 
-*Illustration with sample data, not a device photograph or recorded demo.*
+## What is an AKP03J?
 
-**[Try Now Playing without API credentials →](docs/QUICKSTART.md)** ·
-[日本語で導入](docs/QUICKSTART.ja.md) ·
-[Report your hardware test](https://github.com/afuro77/streamdock-now-playing/issues/new?template=hardware_trial.md)
+The **AJAZZ AKP03J** is a separate USB desktop controller with six LCD buttons,
+three rotary knobs and three ordinary buttons. This repository provides software
+for it; the hardware is not included.
 
-Start with local Spotify desktop playback. You do **not** need a Spotify developer
-account for GSMTC artwork and playback controls. Queue/Connect and YouTube are
-optional integrations with additional setup and limitations. Application volume
-requires an audio mapping. Windows 11, Python 3.12+ and the separate AJAZZ host
-are required; this is still a source preview, not a one-click device installer.
+**[See the actual device: photos and specifications at the AJAZZ official store](https://store.shopping.yahoo.co.jp/ajazz/akp03j.html)**
+· [Open the store's product photograph](https://item-shopping.c.yimg.jp/i/n/ajazz_akp03j)
 
-A Windows **Now Playing / Media Controller** for Stream Dock compatible devices.
-Built around Windows GSMTC, application audio sessions, six LCD keys and rotary
-encoders. Developed on an AJAZZ AKP03J, reported as `AJAZZ AKP03E_3220` by the host.
+The Japanese store is operated by AJAZZ JAPAN (アジャズジャパン株式会社).
+Product photos are linked at their source, not copied into this repository. They
+show the manufacturer's product, not this project's running software. This is an
+independent project, not an official AJAZZ or Spotify product.
 
-**Experimental source preview (`1.2.0.dev1`).** This repository includes the full
-feature source, not a polished installer or a guarantee that every integration
-works for every account/device. No host software, credentials, copyrighted media,
-brand icons or private runtime configuration are included.
+Development uses an AKP03J, identified as `AJAZZ AKP03E_3220` by Stream Dock AJAZZ.
+Other model names do not establish compatibility. See [hardware sources](docs/HARDWARE.md).
+
+## What appears on the screens?
+
+![Illustrated screen layout with original sample artwork, not a product photograph](docs/assets/overview.svg)
+
+*Screen-layout illustration with sample data. For real product photographs, use
+the official-store links above. A recording of this software on hardware is not
+available yet.*
+
+- Four screens on the left show one album cover.
+- Top right shows the track and artist. Bottom right shows playback state, elapsed
+  time and temporary operation feedback.
+- The large knob controls volume and Play/Pause. The small knobs control track
+  changes, seeking or list navigation, depending on the current screen.
+- Press artwork or track information to open a full-device detail view.
+
+## Try basic music controls first
+
+**[First-install guide →](docs/QUICKSTART.md)** · [日本語で導入](docs/QUICKSTART.ja.md)
+
+Start with Spotify desktop playing on the PC. Album artwork and basic playback
+controls use Windows' built-in media-session interface (GSMTC), so this first test
+needs **no Spotify developer account, Client ID or OAuth authorization**. Player
+support varies. Volume requires a configured application mapping.
+
+You need Windows 11, Python 3.12+, the separate Stream Dock AJAZZ host application
+and the device. This plugin runs inside that host; it is not a replacement driver.
+The host profile contains the button assignments and screen layout.
+
+**Experimental source preview (`1.2.0.dev1`).** There is no standalone installer
+or settings GUI yet; settings are edited as JSON. Clean-PC hardware installation
+still needs verification. Keep your original profile so you can switch back.
+No host binaries, credentials, private settings, app logos or copyrighted media
+are distributed.
 
 ## Three modes
 
 | Mode | Features | Status |
 |---|---|---|
-| Spotify / Media | GSMTC metadata, artwork, playback and per-app volume; optional PKCE Queue, Liked Songs, playlist links, Track/Artist/Album details and Connect control | Local functions tested; API features depend on account, scopes and platform limits |
-| Desktop | Clock/date, weather, outdoor laundry guidance, configurable app/shortcut/URL actions, master volume, page/navigation structure | Tested on the development device |
-| YouTube | Browser media controls, rendered-page/channel lists, direct six-LCD video frames, configurable targets and receiver-rate measurement | **Unofficial browser experiment; see restrictions below** |
+| Spotify / Media | Artwork, track information, playback and app volume. Optional Spotify authorization adds the next-up queue, liked songs, playlists, track details and control of Spotify Connect speakers | Basic controls tested locally; additional features depend on account permissions and platform limits |
+| Desktop | Clock/date, weather, outdoor laundry guidance, app/website launch buttons and Windows master volume | Tested on the development device; set your own location and launch targets |
+| YouTube | Video lists, playback/speed controls and video display across six LCDs; requires a Chrome extension | **Unofficial browser experiment; see restrictions below** |
 
 Normal media layout is four artwork LCDs plus track information and playback
 status. Artwork/details expand on press. YouTube lists show three selectable
@@ -56,7 +87,7 @@ YouTube playback speed: press the right small knob, rotate to adjust, and wait f
 
 ## Start here
 
-1. Follow the [credential-free first-try guide](docs/QUICKSTART.md).
+1. Follow the [first-install guide (no Spotify API credentials needed)](docs/QUICKSTART.md).
 2. With the host closed, run `python tools/quickstart.py --check`, then
    `python tools/quickstart.py --install` from a fresh extracted source folder.
 3. Start the host, select **Now Playing OSS Preview**, and test artwork + Play/Pause.

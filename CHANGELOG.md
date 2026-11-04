@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Rewrite the project introduction around the device and user tasks, explain
+  technical terms, and distinguish hardware, host software and this plugin.
+  Link the AJAZZ official store/product photograph with source information;
+  vendor photos are not redistributed. Add a Japanese screen-layout illustration.
+
 - Add an illustrated introduction, English/Japanese credential-free quickstart,
   first-install helper with read-only checks, and a hardware-trial issue template.
   Existing plugin/runtime/environment directories are refused rather than replaced.

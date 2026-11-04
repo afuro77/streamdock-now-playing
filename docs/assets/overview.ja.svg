@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+  <title id="title">Stream Dock Now Playing：音楽画面の配置</title>
+  <desc id="desc">Illustrated layout: four artwork tiles, track information, playback status, volume, previous/next and seek knobs. Original sample art; not a device photograph.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102b2a"/><stop offset="1" stop-color="#0c151e"/></linearGradient>
+    <linearGradient id="art" x2="1" y2="1"><stop stop-color="#f4be76"/><stop offset=".45" stop-color="#d58079"/><stop offset="1" stop-color="#405f88"/></linearGradient>
+  </defs>
+  <rect width="1000" height="470" rx="24" fill="url(#bg)"/>
+  <g font-family="Meiryo,Segoe UI,Arial,sans-serif" fill="#f1faf7">
+    <text x="36" y="44" font-size="26" font-weight="700">AKP03Jで音楽を操作する</text>
+    <text x="36" y="73" font-size="15" fill="#aec8c3">曲情報の表示・再生操作・デスクトップ機能</text>
+    <rect x="31" y="97" width="567" height="335" rx="22" fill="#202a33" stroke="#49625f"/>
+    <rect x="48" y="116" width="246" height="246" rx="10" fill="url(#art)"/>
+    <circle cx="129" cy="182" r="40" fill="#ffe4a3"/>
+    <path d="M48 300L120 224L196 284L254 203L294 246V362H48Z" fill="#264f65"/>
+    <path d="M48 333L132 277L204 331L294 273V362H48Z" fill="#163e48"/>
+    <rect x="166" y="115" width="10" height="248" fill="#202a33"/>
+    <rect x="47" y="234" width="248" height="10" fill="#202a33"/>
+    <rect x="304" y="116" width="118" height="118" rx="8" fill="#10261f"/>
+    <text x="313" y="146" font-size="22" font-weight="700">夕暮れの</text>
+    <text x="313" y="174" font-size="22" font-weight="700">メロディ</text>
+    <text x="313" y="207" font-size="15" fill="#b7d6cb">サンプル歌手</text>
+    <rect x="304" y="244" width="118" height="118" rx="8" fill="#10261f"/>
+    <text x="313" y="281" font-size="28" font-weight="700">PLAY</text>
+    <text x="313" y="321" font-size="28">1:24</text>
+    <rect x="314" y="343" width="95" height="5" rx="2" fill="#345346"/>
+    <rect x="314" y="343" width="39" height="5" rx="2" fill="#71cbaa"/>
+    <circle cx="511" cy="169" r="48" fill="#14232a" stroke="#71cbaa" stroke-width="4"/>
+    <path d="M511 126V139" stroke="#d5f7e5" stroke-width="4" stroke-linecap="round"/>
+    <text x="511" y="176" text-anchor="middle" font-size="18">VOL</text>
+    <circle cx="468" cy="294" r="29" fill="#14232a" stroke="#93aaa4" stroke-width="3"/>
+    <circle cx="547" cy="294" r="29" fill="#14232a" stroke="#93aaa4" stroke-width="3"/>
+    <text x="468" y="300" text-anchor="middle" font-size="15">PREV</text>
+    <text x="547" y="300" text-anchor="middle" font-size="15">SEEK</text>
+    <g fill="#3a4c54"><rect x="48" y="384" width="118" height="26" rx="6"/><rect x="176" y="384" width="118" height="26" rx="6"/><rect x="304" y="384" width="118" height="26" rx="6"/></g>
+    <text x="107" y="402" text-anchor="middle" font-size="12">MODE</text>
+    <text x="235" y="402" text-anchor="middle" font-size="12">QUEUE / HOME</text>
+    <text x="363" y="402" text-anchor="middle" font-size="12">BACK</text>
+    <text x="640" y="143" font-size="23" font-weight="700" fill="#71cbaa">1 · 曲情報を確認</text>
+    <text x="640" y="174" font-size="17">ジャケット・曲名・再生状態を表示</text>
+    <text x="640" y="228" font-size="23" font-weight="700" fill="#71cbaa">2 · ノブやボタンで操作</text>
+    <text x="640" y="259" font-size="17">音量・再生／停止・前曲／次曲</text>
+    <text x="640" y="313" font-size="23" font-weight="700" fill="#71cbaa">3 · 必要な機能を追加</text>
+    <text x="640" y="344" font-size="17">時計・天気・アプリ起動など</text>
+    <text x="640" y="417" font-size="13" fill="#aec8c3">画面配置の説明図です（実機写真ではありません）</text>
+    <text x="36" y="454" font-size="12" fill="#aec8c3">AKP03Jで開発しています。他機種での動作は未確認です。</text>
+  </g>
+</svg>

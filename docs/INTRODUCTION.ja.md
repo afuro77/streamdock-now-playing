@@ -1,9 +1,14 @@
 # 紹介文の下書き（未投稿）
 
-## AJAZZ AKP03Jを、仕事中の手元メディアコントローラーに
+## AJAZZ AKP03JでSpotifyの曲情報を見たり、音楽を操作したりする
 
-仕事の画面を切り替えず音楽を操作したくて、WindowsとStream Dock AJAZZ向けの
-「Stream Dock Now Playing」を作っています。
+Spotifyのウィンドウを開かずに曲名を確認したり、再生・停止を操作したりできる
+Windows用の追加ソフト「Stream Dock Now Playing」を作っています。
+
+使う機器はAJAZZブランドのAKP03Jです。6個の画面付きボタンと3個の回転ノブ、
+3個の通常ボタンを備えています。[公式ストアの製品写真](https://store.shopping.yahoo.co.jp/ajazz/akp03j.html)
+で実物を確認できます。機器は別途必要で、配布しているのはStream Dock AJAZZという
+機器用ソフトの中で動く追加ソフトです。メーカーの公式プラグインではありません。
 
 6枚のLCDは、左4枚がジャケット、右側が曲情報と再生状態です。
 ノブでPlay/Pauseや前曲・次曲を操作できます。Desktop Modeでは時計・天気などの
