@@ -1,7 +1,7 @@
 import asyncio
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from streamdock_now_playing.renderer import LayoutRenderer, DisplaySettings
 from streamdock_now_playing.streamdock import Plugin
 from test_behavior import FakeMedia, FakeWS
@@ -20,10 +20,24 @@ class ScrollTests(unittest.TestCase):
 
     def test_japanese_artist_without_spaces_uses_two_lines(self):
         r = LayoutRenderer()
-        for name in ('レッド・ホット・チリ・ペッパーズ', '日本語のとても長いアーティスト名'):
-            lines = r.artist_lines(name)
-            self.assertTrue(all(lines))
-            self.assertEqual(''.join(lines), name)
+        # Exercise wrapping with known glyph metrics, not whichever fonts are
+        # installed on the runner. Pillow's fallback may lack Japanese glyphs.
+        font = Mock()
+        font.getlength.side_effect = lambda text: len(text) * 36
+        font.getbbox.side_effect = lambda text, **kwargs: (0, 0, len(text) * 36, 36)
+        with patch('streamdock_now_playing.renderer._font', return_value=font):
+            for name in ('レッド・ホット・チリ・ペッパーズ', '日本語のとても長いアーティスト名'):
+                lines = r.artist_lines(name)
+                self.assertTrue(all(lines))
+                self.assertEqual(''.join(lines), name)
+
+    def test_japanese_artist_fitting_measured_width_remains_one_line(self):
+        name = '日本語のとても長いアーティスト名'
+        font = Mock()
+        font.getlength.return_value = 372
+        font.getbbox.return_value = (0, 0, 372, 36)
+        with patch('streamdock_now_playing.renderer._font', return_value=font):
+            self.assertEqual(LayoutRenderer().artist_lines(name), [name, ''])
 
     def test_artist_fitting_one_row_is_not_split(self):
         r = LayoutRenderer()

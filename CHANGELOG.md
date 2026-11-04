@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Make Japanese artist-wrapping regression tests independent of installed fonts.
+  Windows CI runners without Meiryo use different fallback glyph widths; tests
+  now supply known metrics and also check the one-row width boundary. Rendering
+  behavior and device controls are unchanged.
+
 ## 1.2.0.dev1 — source preview, 2026-10-29
 
 - Windows GSMTC metadata and controls, application/master audio adapters.

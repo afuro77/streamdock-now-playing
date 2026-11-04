@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-11-05",
   "files": 126,
   "findings": [],
-  "python_tests": 331,
+  "python_tests": 332,
   "javascript_test_scripts": 4,
   "package_build": "sdist and wheel passed; artifacts excluded from source upload",
   "public_namespace": "org.streamdock.nowplaying.public",
@@ -13,7 +13,7 @@
     ".github/PULL_REQUEST_TEMPLATE.md": "f7dc61ec60c1a7942d2a4a8a17b080687458b906ffe4805e005a7fab297f6c61",
     ".github/workflows/tests.yml": "2483427cbf52839f51e4cf59538c75dbec56791bdfd8af955ed9bdaf28e32ec4",
     ".gitignore": "6b2aacce2a9e988beca8cc6cbc9deccc1ad817d0997ac15408ab27b3695106e0",
-    "CHANGELOG.md": "dbaaa5836218b19b98a5d6f5a81c0f39ad2f471f302fccf907c8925727205839",
+    "CHANGELOG.md": "1bd95b1ceb0b989824d7160cca794ae77ca3cba688c8fb594b4e589a6e969809",
     "CONTRIBUTING.md": "37634a4ba8f73a4c1da94847f47f5ffea103af3fd2e4adfa8194dc16cdc27196",
     "LICENSE": "193070d5c9ed1f1a1e84e47241b5c56a53885eef7b85ecbe0c610e2d6ae615f4",
     "MANIFEST.in": "d84b0f8046b270979bf314173cabe624752d7696db07d2350df5044af9b2085f",
@@ -118,7 +118,7 @@
     "tests/test_queue_covers.py": "6ee73891c4ff17d48d9cdc14f527cf671606e6a9965c4d21ce17136feb27f966",
     "tests/test_queue_navigation.py": "75f97dd08a72e67e44f5c3d43c6012fcf6bebf5a7132d9c22d06d19162605e52",
     "tests/test_queue_sliding.py": "fb00a75a07fc0bf67756970d6809448b1143bea74816686541780c562007ff23",
-    "tests/test_scrolling.py": "bbbcf3309b5532bfc4e42ad5fe54f3732587f42719e86ea0ecdbd966e3dc4ad9",
+    "tests/test_scrolling.py": "e1f052a4bd12f97ed07d0f8df309f18f28a86ff72c1987e5cd27653d9f132b3d",
     "tests/test_spotify_queue.py": "96900015cff16bedcd721bade28203bcc4ca24e927c836a3c4b4f19105a42050",
     "tests/test_startup_config.py": "972beb472198ed55060ce37679677e20cc9ae917aaa39054c4dc5f66b86f9790",
     "tests/test_timeline.py": "61cb87f66f5db84c6527ec15104e91fb3bae1b958aa78c6448baa551ad67258f",
@@ -134,5 +134,6 @@
     "tools/deploy_development.py": "607693bce5e431223c355112a4afd4521974d7b6ddf866d8a4e52b3370b6ae02",
     "tools/install.py": "5197429d1a482f808492447b95b78bcc843207b1cec867c8f85060b6c7f0bdaa",
     "tools/uninstall.py": "5e26c71826892181f5e0ddaa43c6b2d1ed4f59bef8a54b6e7f1da13a4551d356"
-  }
+  },
+  "ci_fix": "Font-independent Japanese wrapping tests; application code unchanged"
 }
