@@ -18,7 +18,7 @@
     "LICENSE": "193070d5c9ed1f1a1e84e47241b5c56a53885eef7b85ecbe0c610e2d6ae615f4",
     "MANIFEST.in": "d84b0f8046b270979bf314173cabe624752d7696db07d2350df5044af9b2085f",
     "PRIVACY.md": "5e1db5237f4dd8d49dbc228c0df9bf2c3df83c40c6ba087d7ca10297032c24cb",
-    "README.ja.md": "7e03b8dc71902d07b35c204bef931ebf72ac743a2216913022604cfb236becfa",
+    "README.ja.md": "2b6c65c70d5f3a80ae7c5b1bbc53d7bc94670c43ae57668af9f0ac515261214e",
     "README.md": "acdd91712e44e35a7193889e447c1e5fd2ed11cde1940a74b1000dd414e9ea57",
     "SECURITY.md": "cb6befdf54af2286dd3f10d690d797fdeb0e11d1316fac153ec2639491bf697d",
     "THIRD_PARTY_NOTICES.md": "6d1995fe45d93a5e049fbdbbd2eecdb534fb3768a616762781c2f35449612998",
@@ -150,5 +150,6 @@
   "ci_fix": "Font-independent Japanese wrapping tests; application code unchanged",
   "youtube_speed": "DEV user reports using the feature; promoted with font-independent public CI tests retained",
   "onboarding": "Bilingual first-try guides, original illustrated layout, guarded first-install helper and hardware-trial template. Clean-PC hardware installation remains unverified.",
-  "readme_revision": "Explain device/vendor/plugin separately; plain English/Japanese copy, official product/photo source links, Japanese layout illustration. Documentation/assets only; no vendor photograph redistributed."
+  "readme_revision": "Explain device/vendor/plugin separately; plain English/Japanese copy, official product/photo source links, Japanese layout illustration. Documentation/assets only; no vendor photograph redistributed.",
+  "japanese_copy": "Shorten explanations and move repeated source/legal notes to linked documentation"
 }
