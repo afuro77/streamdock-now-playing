@@ -11,6 +11,10 @@ needs an audio mapping after installation.
 
 In Spotify and YouTube, tap the center button to open the list from the main view or return to the main view from a list or detail view. In Spotify, hold it to open playlists. In Desktop Mode, press the right small dial to open the app volume mixer, then press the left small dial to choose a Windows audio output.
 
+![AKP03J displaying Spotify artwork and playback information](docs/assets/akp03j-spotify.png)
+
+*Photo of the device during Spotify playback, retouched with AI.*
+
 ## What is an AKP03J?
 
 The **AJAZZ AKP03J** is a separate USB desktop controller with six LCD buttons,
