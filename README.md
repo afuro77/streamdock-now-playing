@@ -68,6 +68,10 @@ are distributed.
 
 ## Three modes
 
+![Desktop Mode on the AKP03J, showing the clock, weather, laundry forecast, and app shortcuts. Photo retouched with AI.](docs/assets/akp03j-desktop.png)
+
+*Desktop Mode on the AKP03J, showing the clock, weather, laundry forecast, and app shortcuts. Photo retouched with AI.*
+
 | Mode | Features | Status |
 |---|---|---|
 | Spotify / Media | Artwork, track information, playback and app volume. Optional Spotify authorization adds the next-up queue, liked songs, playlists, track details and control of Spotify Connect speakers | Basic controls tested locally; additional features depend on account permissions and platform limits |
