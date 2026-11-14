@@ -17,7 +17,7 @@ from .audio_outputs import AudioOutputs
 from .launcher import LauncherSettings,open_target,expand_target
 
 
-def panel(lines):
+def panel(lines, *, percent=None):
     image = Image.new('RGB', (128, 128), '#10212e')
     draw = ImageDraw.Draw(image)
     for text, size, y, color in lines:
@@ -31,6 +31,11 @@ def panel(lines):
             try: font = ImageFont.truetype(font_path, size)
             except OSError: break
         draw.text(((128-draw.textlength(text, font=font))/2, y), text, font=font, fill=color)
+    if percent is not None:
+        draw.rounded_rectangle((10, 112, 117, 121), radius=4, fill='#324451')
+        if percent:
+            draw.rounded_rectangle((10, 112, 10 + round(107 * percent / 100), 121),
+                                   radius=4, fill='#80e3ef')
     return encode(image)
 
 
@@ -177,6 +182,12 @@ class DesktopHome:
         self.widgets=self.page_widgets[0]
         self.blank=panel([])
         self.mixer_hint_until=0
+        assignments = config.get('mixer_dials', {})
+        self.mixer_dials = {
+            role: name.strip().lower()
+            for role, name in assignments.items()
+            if role in ('tracks', 'volume', 'seek') and isinstance(name, str) and name.strip()
+        } if isinstance(assignments, dict) else {}
         self.mixer=AppMixer()
         self.outputs=AudioOutputs()
     @property
@@ -209,6 +220,12 @@ class DesktopHome:
             self.mixer.updated=float('-inf')
         self.cached=None
     def mixer_input(self,role,event,ticks):
+        if self.mixer_dials:
+            target = self.mixer_dials.get(role)
+            if target:
+                self.mixer.adjust(ticks * 2 if event == 'dialRotate' else None, app=target)
+                self.cached = None
+            return
         if role=='seek' and event=='dialRotate':
             self.mixer.move(ticks)
         elif role=='volume':
@@ -248,6 +265,28 @@ class DesktopHome:
         if self.mixing:
             if self.mixer.clock()-self.mixer.updated>=1:self.mixer.refresh()
             result=[self.blank]*6
+            if self.mixer_dials:
+                levels = {app.name: app for app in self.mixer.apps}
+                for cell, (role, label) in enumerate(zip(
+                    ('tracks', 'volume', 'seek'), ('左ノブ', '大ノブ', '右ノブ')
+                )):
+                    name = self.mixer_dials.get(role, '')
+                    app = levels.get(name)
+                    if app:
+                        level = f'{app.percent}%'
+                        state = '音量に差あり' if app.mixed else 'ミュート中' if app.muted else '音量'
+                    else:
+                        level = '--'
+                        state = '取得エラー' if self.mixer.error else '音声未検出' if name else '未割当'
+                    result[cell] = panel([
+                        (name.removesuffix('.exe')[:20] or label, 20, 6, 'white'),
+                        (level, 38, 29, '#80e3ef'),
+                        (state, 15, 84, '#b4cad8'),
+                    ], percent=app.percent if app else None)
+                result[3] = panel([('出力先', 20, 45, 'white')])
+                self.cached = result
+                self.last_refresh = time.monotonic()
+                return result
             apps=self.mixer.visible()
             if not apps:
                 message='音量取得エラー' if self.mixer.error else 'アプリ音量なし'
@@ -284,6 +323,10 @@ class DesktopHome:
         if self.choosing_output:
             self.outputs.select(cell);self.cached=None;return
         if self.mixing:
+            if self.mixer_dials:
+                if cell == 3:
+                    self.open_outputs()
+                return
             self.mixer.select(cell);self.cached=None;return
         if self.detail is not None:
             self.back();return

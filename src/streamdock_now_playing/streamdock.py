@@ -400,6 +400,8 @@ class Plugin:
    if self.modes.active=='desktop':
     if self.desktop.choosing_output and role=='seek' and event in ('dialRotate','dialDown'):
      self.desktop.output_input(event,ticks);await self.render();return
+    if self.desktop.mixing and self.desktop.mixer_dials and role in ('tracks','volume','seek') and event in ('dialRotate','dialDown'):
+     self.desktop.mixer_input(role,event,ticks);await self.render();return
     if self.desktop.mixing and role=='tracks' and event=='dialDown':
      self.desktop.open_outputs();await self.render();return
     if role=='seek' and event=='dialDown':

@@ -76,11 +76,12 @@ class AppMixer:
             index = next((i for i, app in enumerate(self.apps) if app.name == self.selected), -1 if steps > 0 else len(self.apps))
             self.selected = self.apps[max(0, min(len(self.apps) - 1, index + steps))].name
 
-    def adjust(self, amount):
-        if self.selected is None or amount == 0:
+    def adjust(self, amount, *, app=None):
+        target = self.selected if app is None else app
+        if target is None or amount == 0:
             return
         try:
-            entries = self._groups().get(self.selected, [])
+            entries = self._groups().get(target, [])
             mute = not all(muted for _, _, muted in entries)
             for volume, level, _ in entries:
                 if amount is None:

@@ -170,3 +170,9 @@ affiliation with AJAZZ, Mirabox, Spotify, Google, Valve, LINE or OpenAI is impli
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). OS fonts and application icons are
 not redistributed. The [publication review](docs/PUBLICATION_REVIEW.md) records
 provenance checks, exclusions and unresolved service questions.
+
+To assign three apps directly to the dials in the mixer, add this object inside `desktop` in your config. Dial presses toggle mute. The lower-left LCD opens the output selector.
+
+```json
+{ "mixer_dials": { "tracks": "discord.exe", "volume": "chrome.exe", "seek": "spotify.exe" } }
+```

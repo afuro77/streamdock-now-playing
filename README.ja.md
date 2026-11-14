@@ -90,3 +90,9 @@ Spotify APIとYouTube連携は初期状態では無効にしています。
 [動作確認の報告はこちら](https://github.com/afuro77/streamdock-now-playing/issues/new?template=hardware_trial.md)。
 機種、Stream Dock AJAZZのバージョン、動いた点・困った点を教えてください。
 認証情報や設定ファイルは添付しないでください。
+
+ミキサーの3ノブにアプリを固定するには、設定の `desktop` に次の項目を追加します。ノブを押すとミュートが切り替わり、左下LCDで出力先を選べます。
+
+```json
+{ "mixer_dials": { "tracks": "discord.exe", "volume": "chrome.exe", "seek": "spotify.exe" } }
+```
