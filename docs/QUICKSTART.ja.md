@@ -17,8 +17,11 @@ Play/Pauseは再生／一時停止のことです。普段のSpotifyへのログ
 
 - Windows 11、AKP03J／AKP03E_3220、インストール済みのStream Dock AJAZZ。
 - [Python 3.12以降](https://www.python.org/downloads/windows/)。
-- GitHubの **Code → Download ZIP** でダウンロードし、常設するフォルダーへ展開。
-  `pyproject.toml` があるフォルダーをPowerShellで開きます。GitやNode.jsは通常利用に不要です。
+- [ZIPをダウンロード](https://github.com/afuro77/streamdock-now-playing/archive/refs/heads/main.zip)して展開します。
+  展開先は、導入後も移動しない場所を選んでください。
+- エクスプローラーで、展開した中の `pyproject.toml` が見えるフォルダーを開きます。
+  アドレス欄に `powershell` と入力して Enter を押すと、その場所でPowerShellが開きます。
+  GitやNode.jsは不要です。
 - ホスト設定をバックアップし、Stream Dockをタスクトレイから終了してください。
   ウィンドウを閉じるだけでは終了しない場合があります。補助ツールは強制終了しません。
 
@@ -26,6 +29,11 @@ Play/Pauseは再生／一時停止のことです。普段のSpotifyへのログ
 
 ```powershell
 python tools/quickstart.py --check
+```
+
+「Checks passed」と出たら、次を実行します。エラーが出た場合は先に下の「困ったとき」を確認してください。
+
+```powershell
 python tools/quickstart.py --install
 ```
 
@@ -59,6 +67,8 @@ Spotifyデスクトップ版で再生し、初回はGoogle Home等ではなくPC
 認証前にQueue・Playlist・Artist画像・Connectが使えないのは正常です。
 
 ## 困ったとき
+
+- `tools/quickstart.py` が見つからない：ZIPの中身を展開し、PowerShellで `Get-ChildItem pyproject.toml` を実行します。ファイルが出なければ、開いているフォルダーが違います。
 
 - ホスト保存先が見つからない：AJAZZホストを一度起動し、保存先を確認。
 - ホストが動作中：タスクトレイから終了して `--check` をやり直す。
