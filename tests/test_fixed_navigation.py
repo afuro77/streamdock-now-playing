@@ -32,14 +32,34 @@ class FixedNavigationTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(self.p.view_mode,'normal');self.assertEqual(self.p.navigation,[])
         self.assertEqual(self.p.provider.calls,[])
 
-    async def test_browse_always_queue_and_back_restores_previous_screen(self):
-        for mode in ('normal','artwork','metadata'):
-            self.p.view_mode=mode;self.p.navigation=[];self.p.return_steps=2
-            await self.press('player');await self.press('player')
-            self.assertEqual(self.p.view_mode,'queue');self.assertEqual(self.p.navigation,[mode])
-            self.assertEqual(self.p.nav_feedback,'QUEUE')
-            await self.press('back')
-            self.assertEqual(self.p.view_mode,mode);self.assertEqual(self.p.nav_feedback,'BACK')
+    async def test_center_opens_queue_at_home_and_returns_home_from_other_views(self):
+        await self.press('player')
+        self.assertEqual(self.p.view_mode,'queue')
+        self.assertEqual(self.p.nav_feedback,'QUEUE')
+        for mode in ('queue','artwork','metadata','playlists','liked','devices','artist_tracks'):
+            self.p.view_mode=mode;self.p.navigation=['normal']
+            await self.press('player')
+            self.assertEqual(self.p.view_mode,'normal')
+            self.assertEqual(self.p.navigation,[])
+        self.assertEqual(self.p.provider.calls,[])
+
+    async def test_youtube_center_opens_browser_then_returns_home(self):
+        self.p.modes.active='youtube'
+        with patch.object(self.p.youtube, 'open_browser') as browse:
+            await self.press('player')
+            browse.assert_called_once()
+            for view in ('browser','metadata','artwork'):
+                self.p.youtube.view=view
+                await self.press('player')
+                self.assertEqual(self.p.youtube.view,'normal')
+            browse.assert_called_once()
+
+    async def test_right_knob_press_does_not_shuffle_in_spotify_lists(self):
+        self.p.contexts['seek']={'role':'seek','settings':{}}
+        for mode in ('queue','playlists','liked','devices','artist_tracks'):
+            self.p.view_mode=mode
+            await self.p.event({'event':'dialDown','context':'seek'})
+            self.assertEqual(self.p.view_mode,mode)
         self.assertEqual(self.p.provider.calls,[])
 
     async def test_back_without_history_is_harmless_in_all_modes(self):
@@ -60,9 +80,11 @@ class FixedNavigationTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.p.images,before);self.assertEqual(self.p.nav_feedback,'')
 
     async def test_queue_feedback_preserves_other_five_tiles(self):
-        self.p.view_mode='queue'
-        await self.p.render();before=list(self.p.images)
         await self.press('player')
+        self.p.nav_feedback=''
+        await self.p.render();before=list(self.p.images)
+        self.p.nav_feedback='QUEUE';self.p.nav_feedback_until=float('inf')
+        await self.p.render()
         self.assertEqual(self.p.images[:5],before[:5]);self.assertNotEqual(self.p.images[5],before[5])
 
     async def test_key_release_does_not_navigate_again(self):

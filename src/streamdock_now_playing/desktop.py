@@ -12,6 +12,8 @@ from .renderer import encode
 from .laundry import assess_laundry, laundry_window
 from .desktop_icons import icon_panel
 from .desktop_navigation import DesktopNavigation
+from .app_mixer import AppMixer
+from .audio_outputs import AudioOutputs
 from .launcher import LauncherSettings,open_target,expand_target
 
 
@@ -174,8 +176,44 @@ class DesktopHome:
             self.page_widgets.append(self.widgets)
         self.widgets=self.page_widgets[0]
         self.blank=panel([])
+        self.mixer_hint_until=0
+        self.mixer=AppMixer()
+        self.outputs=AudioOutputs()
     @property
     def detail(self):return self.nav.screen
+    @property
+    def mixing(self):return self.detail=='mixer'
+    @property
+    def choosing_output(self):return self.detail=='outputs'
+    def toggle_mixer(self):
+        if self.mixing:
+            self.back()
+        elif self.detail is None:
+            self.mixer.selected=None
+            self.mixer.refresh()
+            if self.mixer.apps:self.mixer.selected=self.mixer.apps[0].name
+            self.nav.open('mixer')
+            self.mixer_hint_until=time.monotonic()+3
+            self.cached=None
+    def open_outputs(self):
+        if self.mixing:
+            self.outputs.message=''
+            self.outputs.refresh(initial=True)
+            self.nav.open('outputs')
+            self.cached=None
+    def output_input(self,event,ticks):
+        if event=='dialRotate':self.outputs.move(ticks)
+        else:
+            self.outputs.apply()
+            self.mixer.selected=None
+            self.mixer.updated=float('-inf')
+        self.cached=None
+    def mixer_input(self,role,event,ticks):
+        if role=='seek' and event=='dialRotate':
+            self.mixer.move(ticks)
+        elif role=='volume':
+            self.mixer.adjust(ticks*2 if event=='dialRotate' else None)
+        self.cached=None
     def home(self):
         self.nav.home();self.widgets=self.page_widgets[self.nav.page];self.cached=None
     def page(self,delta):
@@ -190,8 +228,42 @@ class DesktopHome:
             if cell is not None:images[cell]=panel([(self.feedback,32,40,'white')])
         return images
     def render(self):
-        if self.detail is not None and time.monotonic()-self.detail_input>=30:self.back()
+        if self.detail is not None and not (self.mixing or self.choosing_output) and time.monotonic()-self.detail_input>=30:self.back()
         if self.cached is not None and time.monotonic()-self.last_refresh<1: return self.cached
+        if self.choosing_output:
+            if self.outputs.clock()-self.outputs.updated>=1:self.outputs.refresh()
+            result=[self.blank]*6
+            items=self.outputs.visible()
+            for cell,(key,name) in enumerate(items):
+                selected=key==self.outputs.selected
+                title,_,rest=name.partition(' (')
+                label=self.outputs.message if selected and self.outputs.message else '右ノブで決定' if selected else ''
+                result[cell]=panel([
+                    ('現在の出力' if key==self.outputs.active else '選択中' if selected else '出力先',16,5,'#80e3ef' if selected or key==self.outputs.active else '#9ab7c8'),
+                    (title[:24],20,35,'white'),(rest.rstrip(')')[:24],13,66,'#9ab7c8'),
+                    (label,13,98,'#80e3ef'),
+                ])
+            if not items:result[0]=panel([('出力先',20,12,'white'),(self.outputs.message or '機器なし',16,52,'white')])
+            self.cached=result;self.last_refresh=time.monotonic();return result
+        if self.mixing:
+            if self.mixer.clock()-self.mixer.updated>=1:self.mixer.refresh()
+            result=[self.blank]*6
+            apps=self.mixer.visible()
+            if not apps:
+                message='音量取得エラー' if self.mixer.error else 'アプリ音量なし'
+                result[0]=panel([('音量ミキサー',18,12,'white'),(message,16,49,'white'),('左ノブ押す：出力',14,86,'#9ab7c8')])
+            for cell,app in enumerate(apps):
+                selected=app.name==self.mixer.selected
+                level='MUTE' if app.muted else f'{app.percent}%'
+                show_output_hint=selected and (not app.mixed or time.monotonic()<self.mixer_hint_until)
+                hint='左ノブ押す：出力' if show_output_hint else '音量に差あり' if app.mixed else ''
+                result[cell]=panel([
+                    ('選択中' if selected else 'アプリ音量',16,5,'#80e3ef' if selected else '#9ab7c8'),
+                    (app.name.removesuffix('.exe'),22,34,'white'),
+                    (level,30,63,'#80e3ef' if selected else 'white'),
+                    (hint,12,106,'#9ab7c8'),
+                ])
+            self.cached=result;self.last_refresh=time.monotonic();return result
         if self.detail is not None:
             from .desktop_details import detail_cards
             widget=self.widgets[self.detail]
@@ -209,6 +281,10 @@ class DesktopHome:
     def back(self):
         self.nav.back();self.widgets=self.page_widgets[self.nav.page];self.cached=None
     async def press(self,cell):
+        if self.choosing_output:
+            self.outputs.select(cell);self.cached=None;return
+        if self.mixing:
+            self.mixer.select(cell);self.cached=None;return
         if self.detail is not None:
             self.back();return
         widget=self.widgets.get(cell)

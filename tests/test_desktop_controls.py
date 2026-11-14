@@ -28,7 +28,7 @@ class NavigationTests(unittest.IsolatedAsyncioTestCase):
     async def event(self,role,event='keyDown',ticks=0):await self.p.event({'event':event,'context':role,'payload':{'ticks':ticks}})
     async def tap_home(self):await self.event('player');await self.event('player','keyUp')
     async def test_short_press_opens_spotify_queue(self):
-        self.p.view_mode='metadata';await self.tap_home()
+        self.p.view_mode='normal';await self.tap_home()
         self.assertEqual(self.p.view_mode,'queue');self.p.queue_state.request.assert_called()
     async def test_long_playlist_release_never_fires_queue(self):
         self.p.home_hold_seconds=.01;await self.event('player');await self.p.home_hold_task

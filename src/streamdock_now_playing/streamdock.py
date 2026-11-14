@@ -357,8 +357,9 @@ class Plugin:
     if not self.home_long and held>=self.home_hold_seconds:
      if mode=='spotify':await self.open_playlists()
     elif not self.home_long:
-     if mode=='spotify':await self.open_queue()
-     elif mode=='youtube':self.youtube.open_browser();await self.render()
+     if mode=='spotify' and self.view_mode=='normal':await self.open_queue()
+     elif mode=='youtube' and self.youtube.view=='normal':
+      self.youtube.open_browser();await self.render()
      else:await self.go_home()
    self.home_pressed=None;return
   elif event in ('keyDown','dialDown','dialRotate') and ctx in self.contexts:
@@ -397,6 +398,14 @@ class Plugin:
      logging.exception('YouTube command');self.youtube.feedback='Operation failed';self.youtube.until=time.monotonic()+2.5
     await self.render();return
    if self.modes.active=='desktop':
+    if self.desktop.choosing_output and role=='seek' and event in ('dialRotate','dialDown'):
+     self.desktop.output_input(event,ticks);await self.render();return
+    if self.desktop.mixing and role=='tracks' and event=='dialDown':
+     self.desktop.open_outputs();await self.render();return
+    if role=='seek' and event=='dialDown':
+     self.desktop.toggle_mixer();await self.render();return
+    if self.desktop.mixing and role in ('volume','seek') and event in ('dialRotate','dialDown'):
+     self.desktop.mixer_input(role,event,ticks);await self.render();return
     if role=='player' and event=='keyDown':
      self.desktop.home();await self.render();return
     if role=='volume' and event in ('dialDown','dialRotate'):
@@ -410,6 +419,8 @@ class Plugin:
     if role=='tile' and event=='keyDown':
      await self.desktop.press(int(a['settings'].get('tile',0)))
      await self.render()
+    return
+   if role=='seek' and event=='dialDown' and self.view_mode in ('queue','liked','devices','artist_tracks','playlists'):
     return
    if self.view_mode=='liked' and role=='seek' and event=='dialRotate':
     self.liked.move(ticks);await self.render();return
